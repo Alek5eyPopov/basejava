@@ -13,51 +13,48 @@ public class ArrayStorage {
     private int size;
 
     public void clear() {
-        Arrays.fill(storage, 0, size - 1, null );
+        Arrays.fill(storage, 0, size, null);
         size = 0;
     }
 
     public void update(Resume resume) {
         int index = getIndex(resume.getUuid());
-        if (index >= 0) {
-            storage[index] = resume;
+        if (index < 0) {
+            System.out.println("ERROR: resume" + resume.getUuid() + " does not exist");
             return;
         }
-        System.out.println("ERROR: resume" + resume.getUuid() + " does not exist");
+        storage[index] = resume;
     }
 
     public void save(Resume resume) {
         if (size >= storage.length) {
             System.out.println("ERROR: impossible to save resume " + resume.getUuid() + ". Array overflow");
-            return;
-        }
-
-        if (getIndex(resume.getUuid()) != -1) {
+        } else if (getIndex(resume.getUuid()) != -1) {
             System.out.println("ERROR: resume" + resume.getUuid() + " already exists");
-            return;
+        } else {
+            storage[size] = resume;
+            size++;
         }
-        storage[size] = resume;
-        size++;
     }
 
     public Resume get(String uuid) {
         int index = getIndex(uuid);
-        if (index >= 0) {
-            return storage[index];
+        if (index < 0) {
+            System.out.println("ERROR: resume" + uuid + " does not exist");
+            return null;
         }
-        System.out.println("ERROR: resume" + uuid + " does not exist");
-        return null;
+        return storage[index];
     }
 
     public void delete(String uuid) {
         int index = getIndex(uuid);
-        if (index >= 0) {
-            storage[index] = storage[size - 1];
-            storage[size - 1] = null;
-            size--;
+        if (index < 0) {
+            System.out.println("ERROR: resume" + uuid + " does not exist");
             return;
         }
-        System.out.println("ERROR: resume" + uuid + " does not exist");
+        storage[index] = storage[size - 1];
+        storage[size - 1] = null;
+        size--;
     }
 
     /**
