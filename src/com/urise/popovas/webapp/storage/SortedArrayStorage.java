@@ -14,25 +14,14 @@ public class SortedArrayStorage extends ArrayStorage {
     }
 
     @Override
-    protected void insertResume(Resume resume, int ind) {
-        ind = -ind - 1;
-        if (ind == size) {
-            storage[size] = resume;
-        } else {
-            Resume[] resumes = Arrays.copyOfRange(storage, ind, size);
-            storage[ind] = resume;
-            ind++;
-            for (int i = 0; i < resumes.length; i++) {
-                storage[ind + i] = resumes[i];
-            }
-        }
+    protected void insertResume(Resume resume, int index) {
+        int insertionIndex = -index - 1;
+        System.arraycopy(storage, insertionIndex, storage, insertionIndex + 1, size - insertionIndex);
+        storage[insertionIndex] = resume;
     }
 
     @Override
-    protected void deleteResume(int ind){
-        storage[ind] = null;
-        for (int i = ind + 1; i < size; i++) {
-            storage[i - 1] = storage[i];
-        }
+    protected void deleteResume(int index) {
+        System.arraycopy(storage, index + 1, storage, index, size - index - 1);
     }
 }
