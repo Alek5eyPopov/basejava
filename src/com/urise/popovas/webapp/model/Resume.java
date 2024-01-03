@@ -1,6 +1,7 @@
 package com.urise.popovas.webapp.model;
 
 import java.util.Objects;
+import java.util.UUID;
 
 /**
  * Initial resume class
@@ -23,12 +24,15 @@ public class Resume implements Comparable<Resume>{
         return uuid;
     }
 
-    public void setUuid(String uuid) {
+    private final String uuid;
+
+    public Resume(String uuid) {
         this.uuid = uuid;
     }
 
-    // Unique identifier
-    private String uuid;
+    public Resume() {
+        this(UUID.randomUUID().toString());
+    }
 
     @Override
     public String toString() {

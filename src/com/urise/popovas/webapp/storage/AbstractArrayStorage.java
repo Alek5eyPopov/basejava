@@ -1,5 +1,8 @@
 package com.urise.popovas.webapp.storage;
 
+import com.urise.popovas.webapp.exception.ExistStorageException;
+import com.urise.popovas.webapp.exception.NotExistStorageException;
+import com.urise.popovas.webapp.exception.StorageException;
 import com.urise.popovas.webapp.model.Resume;
 
 import java.util.Arrays;
@@ -23,8 +26,7 @@ public abstract class AbstractArrayStorage implements Storage {
     public void update(Resume resume) {
         int index = getIndex(resume.getUuid());
         if (index < 0) {
-            System.out.println("ERROR: resume" + resume.getUuid() + " does not exist");
-            return;
+            throw new NotExistStorageException(resume.getUuid() );
         }
         storage[index] = resume;
     }
@@ -32,8 +34,7 @@ public abstract class AbstractArrayStorage implements Storage {
     public Resume get(String uuid) {
         int index = getIndex(uuid);
         if (index < 0) {
-            System.out.println("ERROR: resume" + uuid + " does not exist");
-            return null;
+            throw new NotExistStorageException(uuid);
         }
         return storage[index];
     }
@@ -45,9 +46,9 @@ public abstract class AbstractArrayStorage implements Storage {
     public void save(Resume resume) {
         int index = getIndex(resume.getUuid());
         if (size >= storage.length) {
-            System.out.println("ERROR: impossible to save resume " + resume.getUuid() + ". Array overflow");
+            throw new StorageException("ERROR: impossible to save resume " + resume.getUuid() + ". Array overflow", resume.getUuid());
         } else if (index >= 0) {
-            System.out.println("ERROR: resume" + resume.getUuid() + " already exists");
+            throw new ExistStorageException(resume.getUuid() );
         } else {
             insertResume(resume, index);
             size++;
@@ -57,8 +58,7 @@ public abstract class AbstractArrayStorage implements Storage {
     public void delete(String uuid) {
         int index = getIndex(uuid);
         if (index < 0) {
-            System.out.println("ERROR: resume" + uuid + " does not exist");
-            return;
+            throw new NotExistStorageException(uuid);
         }
         storage[index] = null;
         deleteResume(index);
