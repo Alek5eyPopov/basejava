@@ -15,45 +15,48 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     protected abstract void deleteResume(int ind);
 
     @Override
-    protected void clearing() {
+    protected void doClear() {
         Arrays.fill(storage, 0, size, null);
         size = 0;
     }
 
     @Override
-    protected void updating(int index, Resume resume) {
-        storage[index] = resume;
+    protected void doUpdate(Object searchKey, Resume resume) {
+        storage[(Integer) searchKey] = resume;
     }
 
     @Override
-    protected Resume geting(int index) {
-        return storage[index];
+    protected Resume doGet(Object searchKey) {
+        return storage[(Integer) searchKey];
     }
 
     @Override
-    protected void deleting(int index) {
-        storage[index] = null;
-        deleteResume(index);
+    protected boolean isExist(Object searchKey) { return (Integer) searchKey >= 0; }
+
+    @Override
+    protected void doDelete(Object searchKey) {
+        storage[(Integer) searchKey] = null;
+        deleteResume((Integer) searchKey);
         size--;
     }
 
     @Override
-    protected Resume[] gettingAll() {
+    protected Resume[] doGetAll() {
         return Arrays.copyOfRange(storage, 0, size);
     }
 
     @Override
-    protected void saveing(int index, Resume resume) {
+    protected void doSave(Object searchKey, Resume resume) {
         if (size >= storage.length) {
             throw new StorageException("ERROR: impossible to save resume " + resume.getUuid() + ". Array overflow", resume.getUuid());
         } else {
-            insertResume(resume, index);
+            insertResume(resume, (Integer) searchKey);
             size++;
         }
     }
 
     @Override
-    protected int getingSize() {
+    protected int doGetSize() {
         return size;
     }
 }

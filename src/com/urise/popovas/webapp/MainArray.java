@@ -2,7 +2,7 @@ package com.urise.popovas.webapp;
 
 import com.urise.popovas.webapp.model.Resume;
 import com.urise.popovas.webapp.storage.AbstractStorage;
-import com.urise.popovas.webapp.storage.ListStorage;
+import com.urise.popovas.webapp.storage.MapStorage;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -13,7 +13,7 @@ import java.io.InputStreamReader;
  * (just run, no need to understand)
  */
 public class MainArray {
-    private final static AbstractStorage STORAGE = new ListStorage();
+    private final static AbstractStorage STORAGE = new MapStorage();
 
     public static void main(String[] args) throws IOException {
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));

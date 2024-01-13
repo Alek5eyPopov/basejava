@@ -7,45 +7,50 @@ import java.util.List;
 import java.util.ListIterator;
 
 public class ListStorage extends AbstractStorage {
-    protected final List<Resume> resumeList = new ArrayList<>();
+    private final List<Resume> resumeList = new ArrayList<>();
 
     @Override
-    protected void clearing() {
+    protected boolean isExist(Object searchKey) {
+        return searchKey != null;
+    }
+
+    @Override
+    protected void doClear() {
         resumeList.clear();
     }
 
     @Override
-    protected void updating(int index, Resume resume) {
-        resumeList.set(index, resume);
+    protected void doUpdate(Object searchKey, Resume resume) {
+        resumeList.set((Integer) searchKey, resume);
     }
 
     @Override
-    protected void saveing(int index, Resume resume) {
+    protected void doSave(Object searchKey, Resume resume) {
         resumeList.add(resume);
     }
 
     @Override
-    protected Resume geting(int index) {
-        return resumeList.get(index);
+    protected Resume doGet(Object searchKey) {
+        return resumeList.get((Integer) searchKey);
     }
 
     @Override
-    protected void deleting(int index) {
-        resumeList.remove(index);
+    protected void doDelete(Object searchKey) {
+        resumeList.remove(((Integer) searchKey).intValue());
     }
 
     @Override
-    protected Resume[] gettingAll() {
+    protected Resume[] doGetAll() {
         return resumeList.toArray(new Resume[resumeList.size()]);
     }
 
     @Override
-    protected int getingSize() {
+    protected int doGetSize() {
         return resumeList.size();
     }
 
     @Override
-    protected int getIndex(String uuid) {
+    protected Object getSearchKey(String uuid) {
         int i;
         ListIterator<Resume> iterator = resumeList.listIterator();
         while (iterator.hasNext()) {
@@ -54,6 +59,6 @@ public class ListStorage extends AbstractStorage {
                 return i;
             }
         }
-        return -1;
+        return null;
     }
 }
