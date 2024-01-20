@@ -2,36 +2,34 @@ package com.urise.popovas.webapp.storage;
 
 import com.urise.popovas.webapp.model.Resume;
 
-public class MapStorage extends AbstractMapStorage {
-//    private final Map<String, Resume> resumeMap = new HashMap<>();
-
+public class MapResumeStorage extends AbstractMapStorage{
     @Override
     protected Object getSearchKey(String uuid) {
-        return uuid;
+        return resumeMap.get(uuid);
     }
 
     @Override
     protected void doUpdate(Object searchKey, Resume resume) {
-        resumeMap.put((String) searchKey, resume);
+        resumeMap.put(resume.getUuid(), resume);
     }
 
     @Override
     protected void doSave(Object searchKey, Resume resume) {
-        resumeMap.put((String) searchKey, resume);
+        resumeMap.put(resume.getUuid(), resume);
     }
 
     @Override
     protected Resume doGet(Object searchKey) {
-        return resumeMap.get(searchKey);
+        return (Resume)searchKey;
     }
 
     @Override
     protected void doDelete(Object searchKey) {
-        resumeMap.remove(searchKey);
+        resumeMap.remove(((Resume)searchKey).getUuid());
     }
 
     @Override
     protected boolean isExist(Object searchKey) {
-        return resumeMap.containsKey(searchKey);
+        return searchKey != null;
     }
 }

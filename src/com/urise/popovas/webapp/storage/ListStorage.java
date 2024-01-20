@@ -3,6 +3,7 @@ package com.urise.popovas.webapp.storage;
 import com.urise.popovas.webapp.model.Resume;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.ListIterator;
 
@@ -40,8 +41,9 @@ public class ListStorage extends AbstractStorage {
     }
 
     @Override
-    protected Resume[] doGetAll() {
-        return resumeList.toArray(new Resume[resumeList.size()]);
+    protected List<Resume> doGetAll() {
+        Collections.sort(resumeList,resumeComparator);
+        return resumeList;
     }
 
     @Override

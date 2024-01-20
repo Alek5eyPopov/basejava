@@ -3,7 +3,10 @@ package com.urise.popovas.webapp.storage;
 import com.urise.popovas.webapp.exception.StorageException;
 import com.urise.popovas.webapp.model.Resume;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 public abstract class AbstractArrayStorage extends AbstractStorage {
     protected final static int STORAGE_LIMIT = 10000;
@@ -41,8 +44,10 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     }
 
     @Override
-    protected Resume[] doGetAll() {
-        return Arrays.copyOfRange(storage, 0, size);
+    protected List<Resume> doGetAll() {
+        List<Resume> resumeList = new ArrayList<>(Arrays.asList(Arrays.copyOfRange(storage, 0, size)));
+        Collections.sort(resumeList,resumeComparator);
+        return resumeList;
     }
 
     @Override

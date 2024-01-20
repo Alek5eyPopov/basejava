@@ -4,7 +4,19 @@ import com.urise.popovas.webapp.exception.ExistStorageException;
 import com.urise.popovas.webapp.exception.NotExistStorageException;
 import com.urise.popovas.webapp.model.Resume;
 
+import java.util.Comparator;
+import java.util.List;
+
 public abstract class AbstractStorage implements Storage {
+    protected final Comparator<Resume> resumeComparator = (Resume r1, Resume r2) ->{
+        int res = 0;
+//        if (r1 == null && r2 == null) return 0;
+        if (r1 == null) return 1;
+        if (r2 == null) return -1;
+        if(r1.getFullName() != null && r2.getFullName() != null) res = r1.getFullName().compareTo(r2.getFullName());
+        return res != 0 ? res : r1.getUuid().compareTo(r2.getUuid());
+    };
+
     protected abstract Object getSearchKey(String uuid);
 
     protected abstract void doClear();
@@ -17,7 +29,7 @@ public abstract class AbstractStorage implements Storage {
 
     protected abstract void doDelete(Object searchKey);
 
-    protected abstract Resume[] doGetAll();
+    protected abstract List<Resume> doGetAll();
 
     protected abstract int doGetSize();
 
@@ -59,7 +71,7 @@ public abstract class AbstractStorage implements Storage {
     public void delete(String uuid) { doDelete(getExistingSearchKey(uuid)); }
 
     @Override
-    public Resume[] getAll() {
+    public List<Resume> getAllSorted() {
         return doGetAll();
     }
 

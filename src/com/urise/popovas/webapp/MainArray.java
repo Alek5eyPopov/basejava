@@ -2,18 +2,19 @@ package com.urise.popovas.webapp;
 
 import com.urise.popovas.webapp.model.Resume;
 import com.urise.popovas.webapp.storage.AbstractStorage;
-import com.urise.popovas.webapp.storage.MapStorage;
+import com.urise.popovas.webapp.storage.ArrayStorage;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.List;
 
 /**
  * Interactive test for com.urise.popovas.webapp.storage.ArrayStorage implementation
  * (just run, no need to understand)
  */
 public class MainArray {
-    private final static AbstractStorage STORAGE = new MapStorage();
+    private final static AbstractStorage STORAGE = new ArrayStorage();
 
     public static void main(String[] args) throws IOException {
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
@@ -67,9 +68,9 @@ public class MainArray {
     }
 
     static void printAll() {
-        Resume[] all = STORAGE.getAll();
+        List<Resume> all = STORAGE.getAllSorted();
         System.out.println("----------------------------");
-        if (all.length == 0) {
+        if (all.size() == 0) {
             System.out.println("Empty");
         } else {
             for (Resume r : all) {

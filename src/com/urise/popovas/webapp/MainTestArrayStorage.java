@@ -1,6 +1,7 @@
-package com.urise.popovas.webapp.storage;
+package com.urise.popovas.webapp;
 
 import com.urise.popovas.webapp.model.Resume;
+import com.urise.popovas.webapp.storage.ArrayStorage;
 
 /**
  * Test for your com.urise.popovas.webapp.storage.ArrayStorage implementation
@@ -35,7 +36,7 @@ public class MainTestArrayStorage {
 
     static void printAll() {
         System.out.println("\nGet All");
-        for (Resume r : ARRAY_STORAGE.getAll()) {
+        for (Resume r : ARRAY_STORAGE.getAllSorted()) {
             System.out.println(r);
         }
     }

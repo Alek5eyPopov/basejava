@@ -1,4 +1,4 @@
-package com.urise.popovas.webapp.storage;
+package com.urise.popovas.webapp;
 
 import com.urise.popovas.webapp.model.Resume;
 
