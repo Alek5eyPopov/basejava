@@ -4,14 +4,17 @@ import com.urise.popovas.webapp.model.Resume;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 
 public class SortedArrayStorage extends ArrayStorage {
 
+    private final static Comparator<Resume> RESUME_COMPARATOR = Comparator.comparing(Resume::getUuid);
+
     @Override
-    protected Object getSearchKey(String uuid) {
-        Resume searchKey = new Resume(uuid);
-        return Arrays.binarySearch(storage, 0, size, searchKey, resumeComparator);
+    protected Integer getSearchKey(String uuid) {
+        Resume searchKey = new Resume(uuid, "fullName");
+        return Arrays.binarySearch(storage, 0, size, searchKey, RESUME_COMPARATOR );
     }
 
     @Override
@@ -25,13 +28,6 @@ public class SortedArrayStorage extends ArrayStorage {
     protected void deleteResume(int index) {
         System.arraycopy(storage, index + 1, storage, index, size - index - 1);
     }
-
-//    private static class ResumeComparator implements Comparator<Resume>{
-//        @Override
-//        public int compare(Resume o1, Resume o2) {
-//            return o1.getUuid().compareTo(o2.getUuid());
-//        }
-//    }
 
     @Override
     protected List<Resume> doGetAll() {

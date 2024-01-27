@@ -2,36 +2,54 @@ package com.urise.popovas.webapp.storage;
 
 import com.urise.popovas.webapp.model.Resume;
 
-public class MapStorage extends AbstractMapStorage {
-//    private final Map<String, Resume> resumeMap = new HashMap<>();
+import java.util.*;
+
+public class MapStorage extends AbstractStorage <String>{
+    private final Map<String, Resume> resumeMap = new HashMap<>();
 
     @Override
-    protected Object getSearchKey(String uuid) {
+    protected String getSearchKey(String uuid) {
         return uuid;
     }
 
     @Override
-    protected void doUpdate(Object searchKey, Resume resume) {
-        resumeMap.put((String) searchKey, resume);
+    protected void doUpdate(String searchKey, Resume resume) {
+        resumeMap.put(searchKey, resume);
     }
 
     @Override
-    protected void doSave(Object searchKey, Resume resume) {
-        resumeMap.put((String) searchKey, resume);
+    protected void doSave(String searchKey, Resume resume) {
+        resumeMap.put(searchKey, resume);
     }
 
     @Override
-    protected Resume doGet(Object searchKey) {
+    protected Resume doGet(String searchKey) {
         return resumeMap.get(searchKey);
     }
 
     @Override
-    protected void doDelete(Object searchKey) {
+    protected void doDelete(String searchKey) {
         resumeMap.remove(searchKey);
     }
 
     @Override
-    protected boolean isExist(Object searchKey) {
+    protected boolean isExist(String searchKey) {
         return resumeMap.containsKey(searchKey);
+    }
+
+    @Override
+    protected void doClear() {
+        resumeMap.clear();
+    }
+
+    @Override
+    protected List<Resume> doGetAll() {
+        List<Resume> resumeList = new ArrayList<>(resumeMap.values());
+        return resumeList;
+    }
+
+    @Override
+    protected int doGetSize() {
+        return resumeMap.size();
     }
 }
