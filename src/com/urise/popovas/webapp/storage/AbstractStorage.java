@@ -4,7 +4,6 @@ import com.urise.popovas.webapp.exception.ExistStorageException;
 import com.urise.popovas.webapp.exception.NotExistStorageException;
 import com.urise.popovas.webapp.model.Resume;
 
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.logging.Logger;
@@ -67,7 +66,7 @@ public abstract class AbstractStorage<SK> implements Storage {
     public List<Resume> getAllSorted() {
         LOG.info("getAll");
         List<Resume> resumeList = doGetAll();
-        Collections.sort(resumeList,resumeComparator);
+        resumeList.sort(resumeComparator);
         return resumeList;
     }
 

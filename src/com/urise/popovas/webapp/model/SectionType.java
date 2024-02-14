@@ -1,9 +1,8 @@
 package com.urise.popovas.webapp.model;
 
 public enum SectionType {
-    CONTACTS("Контакты"),
-    PERSONAL("Личные качества"),
     OBJECTIVE("Позиция"),
+    PERSONAL("Личные качества"),
     ACHIEVEMENT("Достижения"),
     QUALIFICATIONS("Квалификация"),
     EXPERIENCE("Опыт работы"),
