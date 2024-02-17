@@ -1,17 +1,17 @@
 package com.urise.popovas.webapp.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class Company {
-    String name;
-    String website;
-    List<Period> periods = new ArrayList<>();
+public class Company implements Serializable {
+
+    private Link homePage;
+    private List<Period> periods = new ArrayList<>();
 
     public Company(String name, String website, List<Period> periods) {
-        this.name = name;
-        this.website = website;
+        this.homePage = new Link(name,website);
         this.periods = periods;
     }
 
@@ -20,30 +20,21 @@ public class Company {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Company company = (Company) o;
-        return Objects.equals(name, company.name) &&
-                Objects.equals(website, company.website) &&
+        return Objects.equals(homePage, company.homePage) &&
                 Objects.equals(periods, company.periods);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, website, periods);
+        return Objects.hash(homePage, periods);
     }
 
-    public String getName() {
-        return name;
+    public Link getHomePage() {
+        return homePage;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getWebsite() {
-        return website;
-    }
-
-    public void setWebsite(String website) {
-        this.website = website;
+    public void setHomePage(Link homePage) {
+        this.homePage = homePage;
     }
 
     public List<Period> getPeriods() {
@@ -58,17 +49,12 @@ public class Company {
     }
 
     public Company(String name, String website) {
-        this.name = name;
-        this.website = website;
+        this.homePage = new Link(name,website);
     }
 
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder();
-        sb.append(name + "\n");
-        if( website != null && website != "") {
-            sb.append(website + "\n");
-        }
         for (Period per : periods) {
             sb.append(per.toString() + "\n");
         }

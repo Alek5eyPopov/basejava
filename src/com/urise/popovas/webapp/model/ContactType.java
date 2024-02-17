@@ -1,6 +1,8 @@
 package com.urise.popovas.webapp.model;
 
-public enum ContactType {
+import java.io.Serializable;
+
+public enum ContactType implements Serializable {
     TELEPHONE("Телефон"),
     SKYPE("Скайп"),
     EMAIL("Почта"),

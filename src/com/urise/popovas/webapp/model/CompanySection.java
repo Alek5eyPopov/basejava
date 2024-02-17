@@ -1,18 +1,28 @@
 package com.urise.popovas.webapp.model;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 public class CompanySection extends Section {
     private final List<Company> companyList = new ArrayList<>();
 
+    public Map<Link, List<Company>> getCompanyMap() {
+        return companyMap;
+    }
+
+    private final Map<Link,List<Company>> companyMap = new HashMap<>();
+
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder();
-        for (Company comp : companyList) {
-            sb.append(comp + "\n");
-        }
+        companyMap.forEach((key, value) -> {
+            sb.append(key.getName() + "\n");
+            if( key.getUrl() != null && key.getUrl() != "") {
+                sb.append(key.getUrl() + "\n");
+            }
+            for (Company comp : value) {
+                sb.append(comp + "\n");
+            }
+        });
         return sb.toString();
     }
 

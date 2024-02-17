@@ -1,16 +1,17 @@
 package com.urise.popovas.webapp.model;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.*;
 
 /**
  * Initial resume class
  */
-public class Resume {
+public class Resume implements Serializable {
     private final String uuid;
     private String fullName;
-    private final Map<SectionType, Section> sections = new HashMap<>();
-    private final Map<ContactType, String> contacts = new HashMap<>();
+    private final Map<SectionType, Section> sections = new EnumMap<>(SectionType.class);
+    private final Map<ContactType, String> contacts = new EnumMap<>(ContactType.class);
 
     public Resume(String fullName) {
         this.fullName = fullName;
@@ -46,7 +47,15 @@ public class Resume {
         CompanySection section = (CompanySection)sections.get(sectionType);
         List<Period> periodList = new ArrayList<>();
         periodList.add(new Period(begin,end,tittle,description));
-        section.getCompanyList().add(new Company(name, website, periodList));
+
+//        section.getCompanyList().add(new Company(name, website, periodList));
+
+        Company company = new Company(name, website, periodList);
+        Link link = new Link(name, website);
+        Map<Link, List<Company>> companyMap = section.getCompanyMap();
+        if (!companyMap.containsKey(link)) companyMap.put(link, new ArrayList<>());
+        List<Company> companyList = companyMap.get(link);
+        companyList.add(company);
     }
 
     public void addCompSectionData(SectionType sectionType, String name, String website, LocalDate begin,
@@ -55,7 +64,15 @@ public class Resume {
         CompanySection section = (CompanySection)sections.get(sectionType);
         List<Period> periodList = new ArrayList<>();
         periodList.add(new Period(begin,end,"",description));
-        section.getCompanyList().add(new Company(name, website, periodList));
+
+//        section.getCompanyList().add(new Company(name, website, periodList));
+
+        Company company = new Company(name, website, periodList);
+        Link link = new Link(name, website);
+        Map<Link, List<Company>> companyMap = section.getCompanyMap();
+        if (!companyMap.containsKey(link)) companyMap.put(link, new ArrayList<>());
+        List<Company> companyList = companyMap.get(link);
+        companyList.add(company);
     }
 
     public String getFullName() {
@@ -98,4 +115,11 @@ public class Resume {
         return sb.toString();
     }
 
+    public String getContact(ContactType type) {
+        return contacts.get(type);
+    }
+
+    public Section getSection(SectionType type) {
+        return sections.get(type);
+    }
 }

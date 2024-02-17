@@ -2,7 +2,7 @@ package com.urise.popovas.webapp;
 
 import com.urise.popovas.webapp.model.Resume;
 import com.urise.popovas.webapp.storage.AbstractStorage;
-import com.urise.popovas.webapp.storage.ArrayStorage;
+import com.urise.popovas.webapp.storage.SerializedFileStorage;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -14,7 +14,7 @@ import java.util.List;
  * (just run, no need to understand)
  */
 public class MainArray {
-    private final static AbstractStorage STORAGE = new ArrayStorage();
+    private final static AbstractStorage STORAGE = new SerializedFileStorage();
 
     public static void main(String[] args) throws IOException {
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
@@ -38,7 +38,7 @@ public class MainArray {
                     System.out.println(STORAGE.size());
                     break;
                 case "save":
-                    r = new Resume(uuid);
+                    r = ResumeTestData.fillResume(uuid,"Тестовое имя");
                     STORAGE.save(r);
                     printAll();
                     break;
@@ -54,7 +54,7 @@ public class MainArray {
                     printAll();
                     break;
                 case "update":
-                    r = new Resume(uuid);
+                    r = ResumeTestData.fillResume(uuid,"Тестовое имя");
                     STORAGE.update(r);
                     printAll();
                     break;
