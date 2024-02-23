@@ -5,6 +5,7 @@ import java.time.LocalDate;
 import java.util.Objects;
 
 public class Period implements Serializable {
+    private final static long serialVersionUID = 1L;
     private LocalDate begin;
     private LocalDate end;
     private String tittle;

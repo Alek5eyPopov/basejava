@@ -1,5 +1,6 @@
 package com.urise.popovas.webapp.storage;
 
+import com.urise.popovas.webapp.exception.StorageException;
 import com.urise.popovas.webapp.model.Resume;
 
 import java.io.*;
@@ -11,25 +12,18 @@ public class SerializedFileStorage extends AbstractFileStorage {
     }
 
     @Override
-    protected void writeFile(File file, Resume resume) {
-        try (FileOutputStream fos = new FileOutputStream(file.getPath());
-             ObjectOutputStream oos = new ObjectOutputStream(fos)) {
-            oos.writeObject(resume);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    protected void writeFile(File file, Resume resume) throws IOException {
+        ObjectOutputStream oos = new ObjectOutputStream(new BufferedOutputStream(new FileOutputStream(file.getPath())));
+        oos.writeObject(resume);
+        oos.close();
     }
 
     @Override
-    protected Resume readFile(File file) {
-        try (FileInputStream fis = new FileInputStream(file.getPath());
-             ObjectInputStream ois = new ObjectInputStream(fis)) {
+    protected Resume readFile(File file) throws IOException{
+        try (ObjectInputStream ois = new ObjectInputStream(new BufferedInputStream(new FileInputStream(file.getPath())))) {
             return (Resume) ois.readObject();
-        } catch (IOException e) {
-            e.printStackTrace();
         } catch (ClassNotFoundException e) {
-            e.printStackTrace();
+            throw new StorageException("Read file error" + file.getPath(), null, e);
         }
-        return null;
     }
 }

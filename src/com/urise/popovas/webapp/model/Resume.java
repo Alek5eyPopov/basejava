@@ -8,6 +8,7 @@ import java.util.*;
  * Initial resume class
  */
 public class Resume implements Serializable {
+    private final static long serialVersionUID = 1L;
     private final String uuid;
     private String fullName;
     private final Map<SectionType, Section> sections = new EnumMap<>(SectionType.class);

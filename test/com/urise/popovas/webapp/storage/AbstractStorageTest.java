@@ -1,8 +1,10 @@
 package com.urise.popovas.webapp.storage;
 
+import com.urise.popovas.webapp.ResumeTestData;
 import com.urise.popovas.webapp.exception.ExistStorageException;
 import com.urise.popovas.webapp.exception.NotExistStorageException;
 import com.urise.popovas.webapp.model.Resume;
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -22,10 +24,10 @@ public class AbstractStorageTest {
     protected final static String DUMMY = "dummy";
     private final static String SAVE_UUID = "SaveUuid";
     private final static String SAVE_NAME = "SaveName";
-    private final static Resume RESUME_1 = new Resume(UUID_1,NAME_1);
-    private final static Resume RESUME_2 = new Resume(UUID_2,NAME_2);
-    private final static Resume RESUME_3 = new Resume(UUID_3,NAME_3);
-    private final static Resume RESUME_SAVE = new Resume(SAVE_UUID, SAVE_NAME);
+    private final static Resume RESUME_1 = ResumeTestData.fillResume(UUID_1, NAME_1);
+    private final static Resume RESUME_2 = ResumeTestData.fillResume(UUID_2,NAME_2);
+    private final static Resume RESUME_3 = ResumeTestData.fillResume(UUID_3,NAME_3);
+    private final static Resume RESUME_SAVE = ResumeTestData.fillResume(SAVE_UUID, SAVE_NAME);
 
     public AbstractStorageTest(Storage storage) {
         this.storage = storage;
@@ -43,6 +45,10 @@ public class AbstractStorageTest {
         storage.save(RESUME_3);
     }
 
+    @After
+    public void afterClear(){
+        storage.clear();
+    }
     @Test
     public void clear() {
         storage.clear();
@@ -95,7 +101,7 @@ public class AbstractStorageTest {
 
     @Test(expected = NotExistStorageException.class)
     public void updateNotExist() {
-        storage.update(new Resume(DUMMY, "Dummy"));
+        storage.update(ResumeTestData.fillResume(DUMMY, "Dummy"));
     }
 
     @Test(expected = ExistStorageException.class)

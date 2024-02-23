@@ -3,6 +3,7 @@ package com.urise.popovas.webapp.model;
 import java.util.*;
 
 public class CompanySection extends Section {
+    private final static long serialVersionUID = 1L;
     private final List<Company> companyList = new ArrayList<>();
 
     public Map<Link, List<Company>> getCompanyMap() {

@@ -3,6 +3,7 @@ package com.urise.popovas.webapp.model;
 import java.util.Objects;
 
 public class TextSection extends Section {
+    private final static long serialVersionUID = 1L;
     private String text;
 
     public TextSection(String text) {

@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Objects;
 
 public class Company implements Serializable {
-
+    private final static long serialVersionUID = 1L;
     private Link homePage;
     private List<Period> periods = new ArrayList<>();
 
