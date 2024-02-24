@@ -7,20 +7,31 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public abstract class AbstractFileStorage extends AbstractStorage<File> {
-    private static final String DIRECTORY_PATH = "D:\\ResumeArchive";
+    private final File storageDirectory;
+
+    public AbstractFileStorage(File directory) {
+        Objects.requireNonNull(directory, "Directory must not be null");
+        if (!directory.isDirectory()) {
+            throw new StorageException(directory.getPath() + " is not directory");
+        }
+        if (!directory.canRead() || !directory.canWrite()) {
+            throw new StorageException(directory.getPath() + " no access to write or read");
+        }
+        this.storageDirectory = directory;
+    }
 
     @Override
     protected File getSearchKey(String uuid) {
-        return new File(getFilePath(uuid));
+        return new File(storageDirectory, uuid);
     }
 
     @Override
     protected void doClear() {
-        File dir = new File(DIRECTORY_PATH);
-        File[] files = dir.listFiles();
-        if (files == null) throw new StorageException("No files in directory: " + DIRECTORY_PATH);
+        File[] files = storageDirectory.listFiles();
+        if (files == null) throw new StorageException("No files in directory: " + storageDirectory.getPath());
         for (File file : files) {
             doDelete(file);
         }
@@ -64,9 +75,8 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
     @Override
     protected List<Resume> doGetAll() {
         List<Resume> resumeList = new ArrayList<>();
-        File dir = new File(DIRECTORY_PATH);
-        File[] files = dir.listFiles();
-        if (files == null) throw new StorageException("No files in directory: " + DIRECTORY_PATH);
+        File[] files = storageDirectory.listFiles();
+        if (files == null) throw new StorageException("No files in directory: " + storageDirectory.getPath());
         for (File file : files) {
             if (!file.isDirectory()) {
                 resumeList.add(doGet(file));
@@ -77,21 +87,14 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
 
     @Override
     protected int doGetSize() {
-        File file = new File(DIRECTORY_PATH);
-        File[] files = file.listFiles();
-        if (files == null) throw new StorageException("No files in directory: " + DIRECTORY_PATH);
+        File[] files = storageDirectory.listFiles();
+        if (files == null) throw new StorageException("No files in directory: " + storageDirectory.getPath());
         return files.length;
     }
 
     @Override
     protected boolean isExist(File searchKey) {
         return searchKey.exists();
-    }
-
-    protected abstract String getFileName(String uuid);
-
-    protected String getFilePath(String uuid) {
-        return DIRECTORY_PATH + getFileName(uuid);
     }
 
     protected abstract void writeFile(File file, Resume resume) throws IOException;

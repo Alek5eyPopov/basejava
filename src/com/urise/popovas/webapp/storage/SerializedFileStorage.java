@@ -6,9 +6,9 @@ import com.urise.popovas.webapp.model.Resume;
 import java.io.*;
 
 public class SerializedFileStorage extends AbstractFileStorage {
-    @Override
-    protected String getFileName(String uuid) {
-        return "\\Resume" + uuid + ".bin";
+
+    public SerializedFileStorage(File directory) {
+        super(directory);
     }
 
     @Override

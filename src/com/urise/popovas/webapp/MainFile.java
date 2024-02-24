@@ -8,20 +8,22 @@ public class MainFile {
 
         File file = new File(".");
         try {
-            printFiles(file);
+            printFiles(file, "");
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    public static void printFiles(File file) throws IOException {
+    public static void printFiles(File file, String str) throws IOException {
         if (file.isDirectory()) {
+            System.out.println(str + file.getCanonicalPath());
+            str = str + "   ";
             File[] fileList = file.listFiles();
             for (int i = 0; i < fileList.length; i++) {
-                printFiles(fileList[i]);
+                printFiles(fileList[i], str);
             }
         } else {
-            System.out.println(file.getCanonicalPath());
+            System.out.println(str + file.getName());
         }
     }
 

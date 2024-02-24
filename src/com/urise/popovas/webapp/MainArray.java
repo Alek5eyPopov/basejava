@@ -5,6 +5,7 @@ import com.urise.popovas.webapp.storage.AbstractStorage;
 import com.urise.popovas.webapp.storage.SerializedFileStorage;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.List;
@@ -14,7 +15,7 @@ import java.util.List;
  * (just run, no need to understand)
  */
 public class MainArray {
-    private final static AbstractStorage STORAGE = new SerializedFileStorage();
+    private final static AbstractStorage STORAGE = new SerializedFileStorage( new File("D:\\ResumeArchive"));
 
     public static void main(String[] args) throws IOException {
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
