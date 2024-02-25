@@ -3,6 +3,7 @@ package com.urise.popovas.webapp;
 import com.urise.popovas.webapp.model.Resume;
 import com.urise.popovas.webapp.storage.AbstractStorage;
 import com.urise.popovas.webapp.storage.SerializedFileStorage;
+import com.urise.popovas.webapp.storage.Serializer.ObjectSerializer;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -15,7 +16,7 @@ import java.util.List;
  * (just run, no need to understand)
  */
 public class MainArray {
-    private final static AbstractStorage STORAGE = new SerializedFileStorage( new File("D:\\ResumeArchive"));
+    private final static AbstractStorage STORAGE = new SerializedFileStorage(new ObjectSerializer(), new File("D:\\ResumeArchive"));
 
     public static void main(String[] args) throws IOException {
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
