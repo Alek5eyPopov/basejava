@@ -1,4 +1,4 @@
-package com.urise.popovas.webapp.storage.Serializer;
+package com.urise.popovas.webapp.storage.serializer;
 
 import com.urise.popovas.webapp.model.Resume;
 

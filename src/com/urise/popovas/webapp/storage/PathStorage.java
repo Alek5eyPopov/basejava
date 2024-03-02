@@ -2,7 +2,7 @@ package com.urise.popovas.webapp.storage;
 
 import com.urise.popovas.webapp.exception.StorageException;
 import com.urise.popovas.webapp.model.Resume;
-import com.urise.popovas.webapp.storage.Serializer.Serializer;
+import com.urise.popovas.webapp.storage.serializer.Serializer;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -10,16 +10,17 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
-public class SerializedPathStorage extends AbstractStorage<Path> {
+public class PathStorage extends AbstractStorage<Path> {
     private Serializer serializer;
     private Path storageDirectory;
 
 
-    public SerializedPathStorage(Serializer serializer, String directory) {
+    public PathStorage(Serializer serializer, String directory) {
         Objects.requireNonNull(directory, "Directory must not be null");
         this.serializer = serializer;
         storageDirectory = Paths.get(directory);
@@ -39,16 +40,11 @@ public class SerializedPathStorage extends AbstractStorage<Path> {
 
     @Override
     protected void doClear() {
-        try {
-            Files.list(storageDirectory).forEach(this::doDelete);
-        } catch (IOException e) {
-            throw new StorageException("Path delete error");
-        }
+        getStorageDirPaths().forEach(this::doDelete);
     }
 
     @Override
     protected void doUpdate(Path searchKey, Resume resume) {
-        doDelete(searchKey);
         try {
             serializer.writeFile(new BufferedOutputStream(Files.newOutputStream(searchKey)),resume);
         } catch (IOException e) {
@@ -59,10 +55,11 @@ public class SerializedPathStorage extends AbstractStorage<Path> {
     @Override
     protected void doSave(Path searchKey, Resume resume) {
         try {
-            serializer.writeFile(new BufferedOutputStream(Files.newOutputStream(searchKey)),resume);
+            Files.createFile(searchKey);
         } catch (IOException e) {
             throw new StorageException("Save file error " + searchKey.getFileName(), null, e);
         }
+        doUpdate(searchKey, resume);
     }
 
     @Override
@@ -85,26 +82,24 @@ public class SerializedPathStorage extends AbstractStorage<Path> {
 
     @Override
     protected List<Resume> doGetAll() {
-        List<Resume> resumeList = new ArrayList<>();
-        try {
-            Files.list(storageDirectory).forEach( path -> resumeList.add(doGet(path)));
-        } catch (IOException e) {
-            throw new StorageException("Path get all error");
-        }
-        return resumeList;
+        return getStorageDirPaths().map(this::doGet).collect(Collectors.toList());
     }
 
     @Override
     protected int doGetSize() {
-        try {
-            return (int) Files.list(storageDirectory).count();
-        } catch (IOException e) {
-            throw new StorageException("Path get size error");
-        }
+        return (int) getStorageDirPaths().count();
     }
 
     @Override
     protected boolean isExist(Path searchKey) {
         return Files.exists(searchKey);
+    }
+
+    private Stream<Path> getStorageDirPaths() {
+        try {
+            return Files.list(storageDirectory);
+        } catch (IOException e) {
+            throw new StorageException("Get Storage directory paths list error");
+        }
     }
 }

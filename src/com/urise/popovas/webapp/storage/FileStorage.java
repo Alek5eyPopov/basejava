@@ -2,18 +2,19 @@ package com.urise.popovas.webapp.storage;
 
 import com.urise.popovas.webapp.exception.StorageException;
 import com.urise.popovas.webapp.model.Resume;
-import com.urise.popovas.webapp.storage.Serializer.Serializer;
+import com.urise.popovas.webapp.storage.serializer.Serializer;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
-public class SerializedFileStorage extends AbstractStorage<File> {
+public class FileStorage extends AbstractStorage<File> {
     private final File storageDirectory;
     private Serializer serializer;
 
-    public SerializedFileStorage(Serializer serializer, File directory) {
+    public FileStorage(Serializer serializer, File directory) {
         Objects.requireNonNull(directory, "Directory must not be null");
         if (!directory.isDirectory()) {
             throw new StorageException(directory.getPath() + " is not directory");
@@ -32,30 +33,27 @@ public class SerializedFileStorage extends AbstractStorage<File> {
 
     @Override
     protected void doClear() {
-        File[] files = storageDirectory.listFiles();
-        if (files == null) throw new StorageException("No files in directory: " + storageDirectory.getPath());
-        for (File file : files) {
-            doDelete(file);
-        }
+        Arrays.stream(getStorageDirFiles()).forEach(this::doDelete);
     }
 
     @Override
     protected void doUpdate(File searchKey, Resume resume) {
-        doDelete(searchKey);
         try {
             serializer.writeFile(new BufferedOutputStream(new FileOutputStream(searchKey.getPath())),resume);
         } catch (IOException e) {
             throw new StorageException("Update file error " + searchKey.getPath(), null, e);
         }
+
     }
 
     @Override
     protected void doSave(File searchKey, Resume resume) {
         try {
-            serializer.writeFile(new BufferedOutputStream(new FileOutputStream(searchKey.getPath())),resume);
+            searchKey.createNewFile();
         } catch (IOException e) {
             throw new StorageException("Save file error " + searchKey.getPath(), null, e);
         }
+        doUpdate(searchKey, resume);
     }
 
     @Override
@@ -77,25 +75,25 @@ public class SerializedFileStorage extends AbstractStorage<File> {
     @Override
     protected List<Resume> doGetAll() {
         List<Resume> resumeList = new ArrayList<>();
-        File[] files = storageDirectory.listFiles();
-        if (files == null) throw new StorageException("No files in directory: " + storageDirectory.getPath());
-        for (File file : files) {
-            if (!file.isDirectory()) {
-                resumeList.add(doGet(file));
-            }
-        }
+        Arrays.stream(getStorageDirFiles()).forEach(file -> resumeList.add(doGet(file)));
         return resumeList;
     }
 
     @Override
     protected int doGetSize() {
-        File[] files = storageDirectory.listFiles();
-        if (files == null) throw new StorageException("No files in directory: " + storageDirectory.getPath());
-        return files.length;
+        return getStorageDirFiles().length;
     }
 
     @Override
     protected boolean isExist(File searchKey) {
         return searchKey.exists();
+    }
+
+    private File[] getStorageDirFiles() {
+        File[] files = storageDirectory.listFiles();
+        if (files == null) {
+            throw new StorageException("No files in directory: " + storageDirectory.getPath());
+        }
+        return files;
     }
 }
