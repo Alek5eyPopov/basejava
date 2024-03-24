@@ -1,5 +1,8 @@
 package com.urise.popovas.webapp.model;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlRootElement;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.*;
@@ -7,12 +10,23 @@ import java.util.*;
 /**
  * Initial resume class
  */
+@XmlRootElement
+@XmlAccessorType(XmlAccessType.FIELD)
 public class Resume implements Serializable {
     private final static long serialVersionUID = 1L;
     private final String uuid;
     private String fullName;
-    private final Map<SectionType, Section> sections = new EnumMap<>(SectionType.class);
     private final Map<ContactType, String> contacts = new EnumMap<>(ContactType.class);
+
+    public Map<SectionType, Section> getSections() {
+        return sections;
+    }
+
+    private final Map<SectionType, Section> sections = new EnumMap<>(SectionType.class);
+
+    public Map<ContactType, String> getContacts() {
+        return contacts;
+    }
 
     public Resume(String fullName) {
         this.fullName = fullName;
@@ -93,12 +107,15 @@ public class Resume implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Resume resume = (Resume) o;
-        return Objects.equals(uuid, resume.uuid);
+        return Objects.equals(uuid, resume.uuid) &&
+                Objects.equals(fullName, resume.fullName) &&
+                Objects.equals(sections, resume.sections) &&
+                Objects.equals(contacts, resume.contacts);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(uuid);
+        return Objects.hash(uuid, fullName, sections, contacts);
     }
 
     @Override

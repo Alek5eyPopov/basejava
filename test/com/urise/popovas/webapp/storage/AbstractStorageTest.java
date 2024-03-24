@@ -28,6 +28,7 @@ public class AbstractStorageTest {
     private final static Resume RESUME_2 = ResumeTestData.fillResume(UUID_2,NAME_2);
     private final static Resume RESUME_3 = ResumeTestData.fillResume(UUID_3,NAME_3);
     private final static Resume RESUME_SAVE = ResumeTestData.fillResume(SAVE_UUID, SAVE_NAME);
+    protected final static String DIRECTORY = "D:\\ResumeArchive";
 
     public AbstractStorageTest(Storage storage) {
         this.storage = storage;
@@ -49,6 +50,7 @@ public class AbstractStorageTest {
     public void afterClear(){
         storage.clear();
     }
+
     @Test
     public void clear() {
         storage.clear();

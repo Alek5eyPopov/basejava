@@ -4,6 +4,6 @@ import com.urise.popovas.webapp.storage.serializer.ObjectSerializer;
 
 public class PathStorageTest extends AbstractStorageTest{
     public PathStorageTest() {
-        super(new PathStorage(new ObjectSerializer(), "D:\\ResumeArchive"));
+        super(new PathStorage(new ObjectSerializer(), DIRECTORY ));
     }
 }

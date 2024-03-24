@@ -5,12 +5,11 @@ import java.util.*;
 public class CompanySection extends Section {
     private final static long serialVersionUID = 1L;
     private final List<Company> companyList = new ArrayList<>();
+    private final Map<Link,List<Company>> companyMap = new HashMap<>();
 
     public Map<Link, List<Company>> getCompanyMap() {
         return companyMap;
     }
-
-    private final Map<Link,List<Company>> companyMap = new HashMap<>();
 
     @Override
     public String toString() {

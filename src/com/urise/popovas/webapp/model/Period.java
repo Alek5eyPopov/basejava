@@ -1,12 +1,20 @@
 package com.urise.popovas.webapp.model;
 
+import com.urise.popovas.webapp.util.LocalDateAdapter;
+
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Objects;
 
+@XmlAccessorType(XmlAccessType.FIELD)
 public class Period implements Serializable {
     private final static long serialVersionUID = 1L;
+    @XmlJavaTypeAdapter(LocalDateAdapter.class)
     private LocalDate begin;
+    @XmlJavaTypeAdapter(LocalDateAdapter.class)
     private LocalDate end;
     private String tittle;
     private String description;

@@ -6,6 +6,6 @@ import java.io.File;
 
 public class FileStorageTest extends AbstractStorageTest{
     public FileStorageTest() {
-        super(new FileStorage(new ObjectSerializer(), new File("D:\\ResumeArchive")));
+        super(new FileStorage(new ObjectSerializer(), new File(DIRECTORY)));
     }
 }
