@@ -14,10 +14,10 @@ public enum SectionType implements Serializable {
         return title;
     }
 
-    @Override
-    public String toString() {
-        return title;
-    }
+//    @Override
+//    public String toString() {
+//        return title;
+//    }
 
     private String title;
 

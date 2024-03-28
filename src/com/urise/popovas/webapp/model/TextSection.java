@@ -1,7 +1,9 @@
 package com.urise.popovas.webapp.model;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
 import java.util.Objects;
-
+@XmlAccessorType(XmlAccessType.FIELD)
 public class TextSection extends Section {
     private final static long serialVersionUID = 1L;
     private String text;

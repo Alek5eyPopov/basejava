@@ -69,35 +69,7 @@ public class DataStreamSerializer implements Serializer {
 
             readCollection(dis, () -> resume.addContact(ContactType.valueOf(dis.readUTF()), dis.readUTF()));
 
-//            readCollection(dis, () -> {
-//                String sectionName = dis.readUTF();
-//                SectionType st = SectionType.valueOf(sectionName);
-//                switch (sectionName) {
-//                    case ("OBJECTIVE"):
-//                    case ("PERSONAL"):
-//                        resume.addTextSectionData(st, dis.readUTF());
-//                        break;
-//                    case ("ACHIEVEMENT"):
-//                    case ("QUALIFICATIONS"):
-//                        readCollection(dis, () -> resume.addListSectionData(st, dis.readUTF()));
-//                        break;
-//                    case ("EXPERIENCE"):
-//                    case ("EDUCATION"):
-//                        String name = dis.readUTF();
-//                        String website = dis.readUTF();
-//                        readCollection(dis, () -> readCollection(dis, () -> {
-//                            LocalDate begin = readLocalDate(dis);
-//                            LocalDate end = readLocalDate(dis);
-//                            String tittle = dis.readUTF();
-//                            String description = dis.readUTF();
-//                            resume.addCompSectionData(st, name, website, begin, end, tittle, description);
-//                        }));
-//                        break;
-//                }
-//            });
-
-            int size = dis.readInt();
-            for (int i = 0; i < size; i++) { //  цикл по секциям Map<SectionType, Section> sections
+            readCollection(dis, () -> {
                 String sectionName = dis.readUTF();
                 SectionType st = SectionType.valueOf(sectionName);
                 switch (sectionName) {
@@ -107,34 +79,24 @@ public class DataStreamSerializer implements Serializer {
                         break;
                     case ("ACHIEVEMENT"):
                     case ("QUALIFICATIONS"):
-                        int listSize = dis.readInt();
-                        for (int j = 0; j < listSize; j++) { // цикл по элементам секции List<String> list
-                            resume.addListSectionData(st, dis.readUTF());
-                        }
+                        readCollection(dis, () -> resume.addListSectionData(st, dis.readUTF()));
                         break;
                     case ("EXPERIENCE"):
                     case ("EDUCATION"):
-                        int companySize = dis.readInt();
-                        for (int k = 0; k < companySize; k++) { // цикл по Map<Link,List<Company>> companyMap
+                        readCollection(dis, () -> {
                             String name = dis.readUTF();
                             String website = dis.readUTF();
-                            int companyListSize = dis.readInt();
-                            for (int l = 0; l < companyListSize; l++) { // цикл по List<Company>
-                                int periodListSize = dis.readInt();
-                                for (int p = 0; p < periodListSize; p++) { // цикл по List<Period> periods
-                                    LocalDate begin = readLocalDate(dis);
-                                    LocalDate end = readLocalDate(dis);
-                                    String tittle = dis.readUTF();
-                                    String description = dis.readUTF();
-                                    resume.addCompSectionData(st, name, website, begin, end, tittle, description);
-                                }
-                            }
-                        }
+                            readCollection(dis, () -> readCollection(dis, () -> {
+                                LocalDate begin = readLocalDate(dis);
+                                LocalDate end = readLocalDate(dis);
+                                String tittle = dis.readUTF();
+                                String description = dis.readUTF();
+                                resume.addCompSectionData(st, name, website, begin, end, tittle, description);
+                            }));
+                        });
                         break;
                 }
-            }
-
-
+            });
             return resume;
         }
     }

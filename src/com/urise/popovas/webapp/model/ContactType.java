@@ -20,10 +20,10 @@ public enum ContactType implements Serializable {
         this.title = title;
     }
 
-    @Override
-    public String toString() {
-        return title;
-    }
+//    @Override
+//    public String toString() {
+//        return title;
+//    }
 
     private String title;
 }
