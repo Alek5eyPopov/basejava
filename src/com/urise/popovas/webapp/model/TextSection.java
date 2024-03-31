@@ -17,16 +17,16 @@ public class TextSection extends Section {
         return text;
     }
 
-    public void setText(String text) {
-        this.text = text;
+    @Override
+    public String toString() {
+        return text;
     }
 
     public TextSection() {
     }
 
-    @Override
-    public String toString() {
-        return text;
+    public void setText(String text) {
+        this.text = text;
     }
 
     @Override

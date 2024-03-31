@@ -10,15 +10,6 @@ public enum SectionType implements Serializable {
     EXPERIENCE("Опыт работы"),
     EDUCATION("Образование");
 
-    public String getTitle() {
-        return title;
-    }
-
-//    @Override
-//    public String toString() {
-//        return title;
-//    }
-
     private String title;
 
     SectionType(String title) {

@@ -46,6 +46,11 @@ public class Resume implements Serializable {
         contacts.put(contactType, value);
     }
 
+
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
+    }
+
     public void addTextSectionData(SectionType sectionType, String value) {
         sections.put(sectionType, new TextSection(value));
     }
@@ -63,14 +68,7 @@ public class Resume implements Serializable {
         List<Period> periodList = new ArrayList<>();
         periodList.add(new Period(begin,end,tittle,description));
 
-//        section.getCompanyList().add(new Company(name, website, periodList));
-
-        Company company = new Company(name, website, periodList);
-        Link link = new Link(name, website);
-        Map<Link, List<Company>> companyMap = section.getCompanyMap();
-        if (!companyMap.containsKey(link)) companyMap.put(link, new ArrayList<>());
-        List<Company> companyList = companyMap.get(link);
-        companyList.add(company);
+        section.getCompanyList().add(new Company(name, website, periodList));
     }
 
     public void addCompSectionData(SectionType sectionType, String name, String website, LocalDate begin,
@@ -80,22 +78,12 @@ public class Resume implements Serializable {
         List<Period> periodList = new ArrayList<>();
         periodList.add(new Period(begin,end,"",description));
 
-//        section.getCompanyList().add(new Company(name, website, periodList));
+        section.getCompanyList().add(new Company(name, website, periodList));
 
-        Company company = new Company(name, website, periodList);
-        Link link = new Link(name, website);
-        Map<Link, List<Company>> companyMap = section.getCompanyMap();
-        if (!companyMap.containsKey(link)) companyMap.put(link, new ArrayList<>());
-        List<Company> companyList = companyMap.get(link);
-        companyList.add(company);
     }
 
     public String getFullName() {
         return fullName;
-    }
-
-    public void setFullName(String fullName) {
-        this.fullName = fullName;
     }
 
     public String getUuid() {
@@ -106,38 +94,17 @@ public class Resume implements Serializable {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
+
         Resume resume = (Resume) o;
-        return Objects.equals(uuid, resume.uuid) &&
-                Objects.equals(fullName, resume.fullName) &&
-                Objects.equals(sections, resume.sections) &&
-                Objects.equals(contacts, resume.contacts);
+
+        if (!uuid.equals(resume.uuid)) return false;
+        return fullName.equals(resume.fullName);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(uuid, fullName, sections, contacts);
-    }
-
-    @Override
-    public String toString() {
-        final StringBuilder sb = new StringBuilder();
-        sb.append(fullName + "\n");
-        sb.append(uuid + "\n");
-
-        List<SectionType> sectionTypeList = new ArrayList<>(EnumSet.allOf(SectionType.class));
-        for ( SectionType st: sectionTypeList ) {
-            sections.get(st);
-            sb.append(st + "\n" + sections.get(st) + "\n");
-        }
-
-        return sb.toString();
-    }
-
-    public String getContact(ContactType type) {
-        return contacts.get(type);
-    }
-
-    public Section getSection(SectionType type) {
-        return sections.get(type);
+        int result = uuid.hashCode();
+        result = 31 * result + fullName.hashCode();
+        return result;
     }
 }

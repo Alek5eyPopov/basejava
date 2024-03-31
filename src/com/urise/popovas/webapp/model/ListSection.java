@@ -17,7 +17,8 @@ public class ListSection extends Section {
     public String toString() {
         final StringBuilder sb = new StringBuilder();
         for (String str : list) {
-            sb.append(str + "\n");
+            sb.append(str);
+            sb.append("\n");
         }
         return sb.toString();
     }

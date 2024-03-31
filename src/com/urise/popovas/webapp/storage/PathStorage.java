@@ -20,7 +20,7 @@ public class PathStorage extends AbstractStorage<Path> {
     private Path storageDirectory;
 
 
-    public PathStorage(Serializer serializer, String directory) {
+    PathStorage(Serializer serializer, String directory) {
         Objects.requireNonNull(directory, "Directory must not be null");
         this.serializer = serializer;
         storageDirectory = Paths.get(directory);

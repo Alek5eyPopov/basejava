@@ -22,11 +22,14 @@ public class Period implements Serializable {
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder();
-        sb.append(begin.getMonthValue() +"/" + begin.getYear() + " - " + end.getMonthValue() +"/" + end.getYear() + "\n");
-        if (tittle != null && tittle != "") {
-            sb.append(tittle + "\n");
+        sb.append(begin.getMonthValue() +"/" + begin.getYear() + " - " + end.getMonthValue() +"/" + end.getYear());
+        sb.append("\n");
+        if (tittle != null && !tittle.equals("")) {
+            sb.append(tittle);
+            sb.append("\n");
         }
-        sb.append(description + "\n");
+        sb.append(description);
+        sb.append("\n");
         return sb.toString();
     }
 
@@ -50,44 +53,38 @@ public class Period implements Serializable {
         return begin;
     }
 
-    public void setBegin(LocalDate begin) {
-        this.begin = begin;
+    public Period() {
     }
 
     public LocalDate getEnd() {
         return end;
     }
 
-    public void setEnd(LocalDate end) {
-        this.end = end;
-    }
-
     public String getTittle() {
         return tittle;
+    }
+
+    public void setBegin(LocalDate begin) {
+        this.begin = begin;
+    }
+
+    public void setEnd(LocalDate end) {
+        this.end = end;
     }
 
     public void setTittle(String tittle) {
         this.tittle = tittle;
     }
 
-    public String getDescription() {
-        return description;
-    }
-
     public void setDescription(String description) {
         this.description = description;
     }
 
-    public Period() {
+    public String getDescription() {
+        return description;
     }
 
-    public Period(LocalDate begin, LocalDate end, String description) {
-        this.begin = begin;
-        this.end = end;
-        this.description = description;
-    }
-
-    public Period(LocalDate begin, LocalDate end, String tittle, String description) {
+    Period(LocalDate begin, LocalDate end, String tittle, String description) {
         this.begin = begin;
         this.end = end;
         this.tittle = tittle;
